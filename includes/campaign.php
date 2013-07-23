@@ -492,6 +492,14 @@ function atcf_price_row_args( $args, $value ) {
 }
 add_filter( 'edd_price_row_args', 'atcf_price_row_args', 10, 2 );
 
+function atcf_edd_variable_prices_name_custom( $key, $args ) { 
+?>
+	<textarea class="edd_variable_prices_name widefat" placeholder="<?php _e( 'Option Name', 'edd' ); ?>" name="edd_variable_prices[<?php echo $key; ?>][name]" id="edd_variable_prices[<?php echo $key; ?>][name]" rows="3"><?php echo esc_textarea( $args[ 'name' ] ); ?></textarea>
+<?php
+}
+add_action( 'edd_variable_prices_name_custom', 'atcf_edd_variable_prices_name_custom', 10, 2 );
+add_filter( 'edd_variable_prices_name_custom', '__return_true' );
+
 /**
  * Campaign Stats Box
  *

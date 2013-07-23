@@ -403,14 +403,16 @@ function atcf_shortcode_submit_field_rewards( $atts, $campaign ) {
 		<div class="atcf-submit-campaign-reward">
 			<?php do_action( 'atcf_shortcode_submit_field_rewards_before' ); ?>
 
+			<?php if ( ! $disabled ) : ?>
+			<p class="atcf-submit-campaign-reward-remove">
+				<label>&nbsp;</label><br />
+				<a href="#">&times;</a>
+			</p>
+			<?php endif; ?>
+
 			<p class="atcf-submit-campaign-reward-price">
 				<label for="rewards[<?php echo esc_attr( $key ); ?>][price]"><?php printf( __( 'Amount (%s)', 'atcf' ), edd_currency_filter( '' ) ); ?></label>
 				<input class="name" type="text" name="rewards[<?php echo esc_attr( $key ); ?>][price]" id="rewards[<?php echo esc_attr( $key ); ?>][price]" value="<?php echo esc_attr( $reward[ 'amount' ] ); ?>" <?php if ( $disabled ) : ?>readonly="readonly"<?php endif; ?> />
-			</p>
-
-			<p class="atcf-submit-campaign-reward-description">
-				<label for="rewards[<?php echo esc_attr( $key ); ?>][description]"><?php _e( 'Reward', 'atcf' ); ?></label>
-				<input class="description" type="text" name="rewards[<?php echo esc_attr( $key ); ?>][description]" id="rewards[<?php echo esc_attr( $key ); ?>][description]" rows="3" value="<?php echo esc_attr( $reward[ 'name' ] ); ?>" <?php if ( $disabled ) : ?>readonly="readonly"<?php endif; ?> />
 			</p>
 
 			<p class="atcf-submit-campaign-reward-limit">
@@ -419,14 +421,12 @@ function atcf_shortcode_submit_field_rewards( $atts, $campaign ) {
 				<input type="hidden" name="rewards[<?php echo esc_attr( $key ); ?>][bought]" id="rewards[<?php echo esc_attr( $key ); ?>][bought]" value="<?php echo isset ( $reward[ 'bought' ] ) ? esc_attr( $reward[ 'bought' ] ) : null; ?>" />
 			</p>
 
-			<?php do_action( 'atcf_shortcode_submit_field_rewards_after' ); ?>
-
-			<?php if ( ! $disabled ) : ?>
-			<p class="atcf-submit-campaign-reward-remove">
-				<label>&nbsp;</label><br />
-				<a href="#">&times;</a>
+			<p class="atcf-submit-campaign-reward-description">
+				<label for="rewards[<?php echo esc_attr( $key ); ?>][description]"><?php _e( 'Reward', 'atcf' ); ?></label>
+				<textarea class="description" type="text" name="rewards[<?php echo esc_attr( $key ); ?>][description]" id="rewards[<?php echo esc_attr( $key ); ?>][description]" rows="3" <?php if ( $disabled ) : ?>readonly="readonly"<?php endif; ?> />><?php echo esc_textarea( $reward[ 'name' ] ); ?></textarea>
 			</p>
-			<?php endif; ?>
+
+			<?php do_action( 'atcf_shortcode_submit_field_rewards_after' ); ?>
 		</div>
 		<?php endforeach; ?>
 
@@ -434,14 +434,14 @@ function atcf_shortcode_submit_field_rewards( $atts, $campaign ) {
 		<div class="atcf-submit-campaign-reward">
 			<?php do_action( 'atcf_shortcode_submit_field_rewards_before' ); ?>
 
+			<p class="atcf-submit-campaign-reward-remove">
+				<label>&nbsp;</label><br />
+				<a href="#">&times;</a>
+			</p>
+
 			<p class="atcf-submit-campaign-reward-price">
 				<label for="rewards[0][price]"><?php printf( __( 'Amount (%s)', 'atcf' ), edd_currency_filter( '' ) ); ?></label>
 				<input class="name" type="text" name="rewards[0][price]" id="rewards[0][price]" placeholder="<?php echo edd_format_amount( 20 ); ?>">
-			</p>
-
-			<p class="atcf-submit-campaign-reward-description">
-				<label for="rewards[0][description]"><?php _e( 'Reward', 'atcf' ); ?></label>
-				<input class="description" type="text" name="rewards[0][description]" id="rewards[0][description]" rows="3" placeholder="<?php esc_attr_e( 'Description of reward for this level of contribution.', 'atcf' ); ?>" />
 			</p>
 
 			<p class="atcf-submit-campaign-reward-limit">
@@ -449,12 +449,12 @@ function atcf_shortcode_submit_field_rewards( $atts, $campaign ) {
 				<input class="description" type="text" name="rewards[0][limit]" id="rewards[0][limit]" />
 			</p>
 
-			<?php do_action( 'atcf_shortcode_submit_field_rewards_after' ); ?>
-
-			<p class="atcf-submit-campaign-reward-remove">
-				<label>&nbsp;</label><br />
-				<a href="#">&times;</a>
+			<p class="atcf-submit-campaign-reward-description">
+				<label for="rewards[0][description]"><?php _e( 'Reward', 'atcf' ); ?></label>
+				<textarea class="description" type="text" name="rewards[0][description]" id="rewards[0][description]" rows="3" placeholder="<?php esc_attr_e( 'Description of reward for this level of contribution.', 'atcf' ); ?>"></textarea>
 			</p>
+
+			<?php do_action( 'atcf_shortcode_submit_field_rewards_after' ); ?>
 		</div>
 		<?php endif; ?>
 
@@ -760,7 +760,7 @@ function atcf_shortcode_submit_process() {
 		$prices[] = array(
 			'name'   => sanitize_text_field( $reward[ 'description' ] ),
 			'amount' => apply_filters( 'edd_metabox_save_edd_price', $reward[ 'price' ] ),
-			'limit'  => sanitize_text_field( $reward[ 'limit' ] ),
+			'limit'  => esc_html( $reward[ 'limit' ] ),
 			'bought' => isset ( $reward[ 'bought' ] ) ? sanitize_text_field( $reward[ 'bought' ] ) : 0
 		);
 	}
