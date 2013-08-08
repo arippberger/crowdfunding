@@ -25,6 +25,7 @@ function atcf_shortcode_register() {
 	ob_start();
 
 	echo '<div class="atcf-register">';
+	edd_print_errors();
 	echo '<form name="registerform" id="registerform" action="" method="post">';
 	do_action( 'atcf_shortcode_register', $user, $post );
 	echo '</form>';
@@ -45,20 +46,24 @@ add_shortcode( 'appthemer_crowdfunding_register', 'atcf_shortcode_register' );
  */
 function atcf_shortcode_register_form() {
 	global $edd_options;
+
+	$displayname = isset ( $_POST[ 'displayname' ] ) ? esc_attr( $_POST[ 'displayname' ] ) : null;
+	$user_email  = isset ( $_POST[ 'user_email' ] ) ? esc_attr( $_POST[ 'user_email' ] ) : null;
+	$user_login  = isset ( $_POST[ 'user_login' ] ) ? esc_attr( $_POST[ 'user_login' ] ) : null;
 ?>
 	<p class="atcf-register-name">
 		<label for="user_nicename"><?php _e( 'Your Name', 'atcf' ); ?></label>
-		<input type="text" name="displayname" id="displayname" class="input" value="" />
+		<input type="text" name="displayname" id="displayname" class="input" value="<?php echo $displayname; ?>" />
 	</p>
 
 	<p class="atcf-register-email">
 		<label for="user_login"><?php _e( 'Email Address', 'atcf' ); ?></label>
-		<input type="text" name="user_email" id="user_email" class="input" value="" />
+		<input type="text" name="user_email" id="user_email" class="input" value="<?php echo $user_email; ?>" />
 	</p>
 
 	<p class="atcf-register-username">
 		<label for="user_login"><?php _e( 'Username', 'atcf' ); ?></label>
-		<input type="text" name="user_login" id="user_login" class="input" value="" />
+		<input type="text" name="user_login" id="user_login" class="input" value="<?php echo $user_login; ?>" />
 	</p>
 
 	<p class="atcf-register-password">
@@ -92,8 +97,6 @@ function atcf_registration_handle() {
 	if ( ! wp_verify_nonce( $_POST[ '_wpnonce' ], 'atcf-register-submit' ) )
 		return;
 
-	$errors   = new WP_Error();
-
 	$nicename = isset( $_POST[ 'displayname' ] ) ? esc_attr( $_POST[ 'displayname' ] ) : null;
 	$email    = isset( $_POST[ 'user_email' ] ) ? esc_attr( $_POST[ 'user_email' ] ) : null;
 	$username = isset( $_POST[ 'user_login' ] ) ? esc_attr( $_POST[ 'user_login' ] ) : null;
@@ -101,23 +104,23 @@ function atcf_registration_handle() {
 
 	/** Check Email */
 	if ( empty( $email ) || ! is_email( $email ) )
-		$errors->add( 'invalid-email', __( 'Please enter a valid email address.', 'atcf' ) );
+		edd_set_error( 'invalid-email', __( 'Please enter a valid email address.', 'atcf' ) );
 
 	if ( email_exists( $email ) )
-		$errors->add( 'taken-email', __( 'That contact email address already exists.', 'atcf' ) );
+		edd_set_error( 'taken-email', __( 'That contact email address already exists.', 'atcf' ) );
 
 	/** Check Password */
 	if ( empty( $password ) )
-		$errors->add( 'invalid-password', __( 'Please choose a secure password.', 'atcf' ) );
+		edd_set_error( 'invalid-password', __( 'Please choose a secure password.', 'atcf' ) );
 
 	/** Check Username */
 	if ( ! empty( $username ) && username_exists( $username ) )
-		$errors->add( 'username-exists', __( 'Sorry, this username is already taken.', 'atcf' ) );
+		edd_set_error( 'username-exists', __( 'Sorry, this username is already taken.', 'atcf' ) );
 
-	$errors = apply_filters( 'atcf_register_validate', $errors, $_POST );
+	do_action( 'atcf_register_validate', $_POST );
 
-	if ( ! empty ( $errors->errors ) )
-		wp_die( $errors );
+	if ( edd_get_errors() )
+		return;
 
 	if ( '' == $username )
 		$username = $email;
