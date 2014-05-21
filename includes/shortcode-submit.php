@@ -1351,7 +1351,6 @@ function atcf_submit_process_after( $campaign, $postdata, $status, $fields ) {
 	 * Some standard EDD stuff to save
 	 */
 	update_post_meta( $campaign, '_variable_pricing', 1 );
-	update_post_meta( $campaign, '_edd_price_options_mode', 1 );
 	update_post_meta( $campaign, '_edd_hide_purchase_link', 'on' );
 }
 
