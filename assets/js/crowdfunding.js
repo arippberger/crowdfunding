@@ -162,6 +162,7 @@ Crowdfunding.SubmitCampaign = ( function($) {
 				$( this )
 					.attr( 'name', name )
 					.attr( 'id', name )
+					.attr( 'value', '' )
 					.attr( 'readonly', false );
 
 				$( this ).prev()
