@@ -3,7 +3,7 @@
 Author URI: http://astoundify.com
 Plugin URI: http://astoundify.com
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=contact@astoundify.com&item_name=Donation+for+Crowdfunding
-Contributors: SpencerFinnell, adampickering
+Contributors: virtuousgiant
 Tags: crowdfunding, donations, charity, fundraising, digital downloads, crowd funding, crowdsource
 Requires at least: 3.9
 Tested up to: 3.9
