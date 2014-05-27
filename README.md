@@ -23,9 +23,8 @@ There are various ways you can contribute:
 
 ## Compatible Themes ##
 
-We currently have two compatible themes that have been released:
+We currently have one compatible theme that has been released:
 
-* The first theme released is called ["Fundify"](http://themeforest.net/item/fundify-crowd-funding-wordpress-theme/4257622?ref=Astoundify) from [Astoundify](http://Astoundify.com/fundify.html) A large community crowdfunding theme, like Kickstarter or Indiegogo.
-* The second theme released is called ["Campaignify"](http://themeforest.net/item/campaignify-multipurpose-crowdfunding-theme/4725411?ref=Astoundify) from [Astoundify](http://Astoundify.com/) A multi-purpose crowdfunding theme, great for single product crowdfunding.
+* The first theme released is called ["Fundify"](http://themeforest.net/item/fundify-crowd-funding-wordpress-theme/4257622?ref=IgnitionDeck) from [IgnitionDeck](http://ignitiondeck.com/id?utm_source=Github&utm_medium=link&utm_campaign=Fundify) A large community crowdfunding theme, like Kickstarter or Indiegogo.
 
 
