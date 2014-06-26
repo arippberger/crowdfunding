@@ -670,11 +670,11 @@ class ATCF_Submit_Campaign {
 			delete_post_meta( $campaign, 'campaign_' . $key );
 
 			return;
+		} elseif( isset( $_POST[ $key ] ) ) {
+			do_action( 'atcf_shortcode_submit_save_field_' . $key, $key, $field, $campaign, $fields );
+
+			update_post_meta( $campaign, 'campaign_' . $key, sanitize_text_field( $field[ 'value' ] ) );
 		}
-
-		do_action( 'atcf_shortcode_submit_save_field_' . $key, $key, $field, $campaign, $fields );
-
-		update_post_meta( $campaign, 'campaign_' . $key, sanitize_text_field( $field[ 'value' ] ) );
 	}
 }
 
