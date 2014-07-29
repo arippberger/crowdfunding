@@ -538,7 +538,6 @@ class ATCF_Submit_Campaign {
 				);
 			}
 		}
-
 		update_post_meta( $campaign, 'edd_variable_prices', $prices );
 	}
 
@@ -666,11 +665,13 @@ class ATCF_Submit_Campaign {
 	 * @return void
 	 */
 	public function save_field( $key, $field, $campaign, $fields ) {
-		if ( isset ( $_POST[ $key ] ) && '' == $_POST[ $key ] ) {
+		
+		if ( isset ( $_POST[ $key ] ) && empty($_POST[ $key ]) ) {
 			delete_post_meta( $campaign, 'campaign_' . $key );
-
 			return;
+
 		} elseif( isset( $_POST[ $key ] ) ) {
+
 			do_action( 'atcf_shortcode_submit_save_field_' . $key, $key, $field, $campaign, $fields );
 
 			update_post_meta( $campaign, 'campaign_' . $key, sanitize_text_field( $field[ 'value' ] ) );
@@ -1319,6 +1320,7 @@ add_action( 'template_redirect', 'atcf_shortcode_submit_process' );
  * @return void
  */
 function atcf_submit_process_after( $campaign, $postdata, $status, $fields ) {
+
 	global $edd_options, $wp_query;
 
 	$submit_campaign = atcf_submit_campaign();
@@ -1332,6 +1334,10 @@ function atcf_submit_process_after( $campaign, $postdata, $status, $fields ) {
 			case 'category' :
 			case 'length' :
 			case 'rewards' :
+				if (!empty($field['value'])) {
+					$rewards = true;
+				}
+				break;
 			case 'image' :
 			case 'goal' :
 			case 'physical' :
@@ -1350,7 +1356,9 @@ function atcf_submit_process_after( $campaign, $postdata, $status, $fields ) {
 	/**
 	 * Some standard EDD stuff to save
 	 */
-	update_post_meta( $campaign, '_variable_pricing', 1 );
+	if (isset($rewards) && $rewards) {
+		update_post_meta( $campaign, '_variable_pricing', 1 );
+	}
 	update_post_meta( $campaign, '_edd_hide_purchase_link', 'on' );
 }
 

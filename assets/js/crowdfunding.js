@@ -21,7 +21,6 @@ Crowdfunding.Campaign = ( function($) {
 	function priceOptionsHandler() {
 		customPriceField.keyup(function() {
 			var price = $( this ).asNumber( formatCurrencySettings );
-
 			delay( function() {
 				if ( price < startPledgeLevel )
 					Crowdfunding.Campaign.findPrice( startPledgeLevel );
@@ -74,7 +73,6 @@ Crowdfunding.Campaign = ( function($) {
 				.formatCurrency( formatCurrencySettings );
 
 			currentPrice = price;
-
 			priceOptions.each( function( index ) {
 				var price       = price = Crowdfunding.Campaign.parsePrice( $(this) );
 				var pledgeLevel = parseFloat( price );
@@ -90,28 +88,36 @@ Crowdfunding.Campaign = ( function($) {
 					}
 				}
 			});
-
-			foundPrice.el.find( 'input[type="radio"]' ).attr( 'checked', true );
+			foundPrice = jQuery('input[type="radio"]:checked');
+			//foundPrice.el.find( 'input[type="radio"]' ).attr( 'checked', true );
 		},
 
 		setBasePrice : function() {
-			var basePrice = {
-				price : 1000000000, // something crazy
-				el    : null
-			}
-
-			priceOptions.each( function( index ) {
-				if ( ! $( this ).hasClass( 'inactive' ) ) {
-					var price = Crowdfunding.Campaign.parsePrice( $(this) );
-
-					if ( parseFloat( price ) < parseFloat( basePrice.price ) ) {
-						basePrice = {
-							price : price,
-							el     : $( this )
+			if (priceOptions.length > 0) {
+				var basePrice = {
+					price : 1000000000, // something crazy
+					el    : null
+				}
+				priceOptions.each( function( index ) {
+					if ( ! $( this ).hasClass( 'inactive' ) ) {
+						var price = Crowdfunding.Campaign.parsePrice( $(this) );
+						if ( parseFloat( price ) < parseFloat( basePrice.price ) ) {
+							basePrice = {
+								price : price,
+								el     : $( this )
+							}
 						}
 					}
+				});
+				
+			}
+			else {
+				var basePrice = {
+					price : 0, // something crazy
+					el    : null
 				}
-			});
+				
+			}
 
 			startPledgeLevel = parseFloat( basePrice.price );
 
@@ -162,7 +168,6 @@ Crowdfunding.SubmitCampaign = ( function($) {
 				$( this )
 					.attr( 'name', name )
 					.attr( 'id', name )
-					.attr( 'value', '' )
 					.attr( 'readonly', false );
 
 				$( this ).prev()
