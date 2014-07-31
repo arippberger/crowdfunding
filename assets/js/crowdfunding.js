@@ -173,8 +173,10 @@ Crowdfunding.SubmitCampaign = ( function($) {
 				$( this ).prev()
 					.attr( 'for', label );
 
-				newReward.insertBefore( $( '.atcf-submit-campaign-add-reward' ) ).show();
+				
 			});
+			
+			newReward.insertBefore( $(this) ).show();
 		});
 	}
 
